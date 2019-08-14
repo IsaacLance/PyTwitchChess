@@ -27,6 +27,7 @@ MANIFEST
 
 players.csv
 pics
-streamer-kit/
+streamer-kit/*
 *.log
 secrets.ini
+.idea/*
