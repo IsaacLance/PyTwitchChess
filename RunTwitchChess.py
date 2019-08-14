@@ -78,23 +78,6 @@ class Turk:
         self.matcher = re.compile("[a-h][1-8][a-h][1-8]")
 
         # GUI
-        # (votes window)
-        # move_layout = [*[[sg.Text("test", size=(3, 1), font = ("Times", 20), background_color = "#FFFFFF",
-        #                 justification="center", pad = (0,0), key=f"c_{i}")] for i in range(10)]]
-
-        # bar_layout = [*[[sg.ProgressBar(10000, orientation="h", size=(15, 25), bar_color = ("#224782", "#FFFFFF"),
-        #                 style = "default", border_width = 0, relief = None, key = f"p_{i}")] for i in range(10)]]
-
-        # ratio_layout = [*[[sg.Text("test", size=(3, 1), font = ("Times", 20), background_color = "#FFFFFF",
-        #                 justification="center", pad = (0,0), key=f"r_{i}")] for i in range(10)]]
-
-        # cols_layout = [[sg.Column(move_layout, background_color = "#FFFFFF", pad = (0,0)),
-        #                 sg.Column(bar_layout, background_color = "#FFFFFF", pad = (0,0)), 
-        #                 sg.Column(ratio_layout, background_color = "#FFFFFF", pad = (0,0))]]
-
-        # #self.votes_window = sg.Window("Votes", cols_layout, background_color = "#FFFFFF", #no_titlebar=True, keep_on_top=True, grab_anywhere=True)
-        # #self.votes_window.Finalize()
-
         # Votes Graph/Window
         self.graph_size = (342, 400)
         self.graph_bl = (0, 500)
@@ -164,14 +147,6 @@ class Turk:
         time.sleep(3)
         self.handle_element_by_css_selector(self.css["button_white"], 15, click=True)
         time.sleep(3)
-        # try:
-        #     white_player_text = self.handle_element_by_css_selector("div[class='player color-icon is white text']", 15).find_element_by_css_selector("a").text
-        #     self.is_white() = True
-        # except(NoSuchElementException):
-        #     self.is_white() = False
-        # if self.verbose:
-        #     print(white_player_text, flush = True)
-        #     print(self.is_white(), flush = True)
         return True
 
     #######
@@ -402,10 +377,6 @@ class Turk:
             return 2
         # Using css element references outside of handle function
         out = self.handle_moves_list()
-        """print(f"out: {out[-5:]}", flush = True)
-        print(f"moves_list: {self.moves_list[-5:]}", flush = True)
-        print(len(out), flush = True)
-        print(len(self.moves_list), flush = True)"""
         if len(out) - len(self.moves_list) < 0:
             print("Somehow moves_list got longer than the actual moves list on the site.", flush=True)
             raise Exception
@@ -430,7 +401,6 @@ class Turk:
 
     def uci_to_offset(self, uci, l):
         # Get board
-
         # Convert uci to four ints
         coords = [self.black_dims[uci[0]], int(uci[1]),
                   self.black_dims[uci[2]], int(uci[3])]
@@ -462,6 +432,7 @@ class Turk:
         raise Exception
 
     def edit_name(self):
+        # lichess detects this as a js script call and boots our ip address. Use with caution.
         while True:
             try:
                 names = self.browser.find_elements_by_xpath(f"//*[contains(text(), {self.username})]")
@@ -678,12 +649,7 @@ class Turk:
             self.update_timer_window(vote_time.seconds)
             self.update_chat_window("_" * 33)
             # Decide winning move
-            # time.sleep(random.uniform(0,1))
             self.move(self.decide_move())
-            print("", flush=True)
-            print(f"current players:", flush=True)
-            print(self.data["id"].values, flush=True)
-
         return
 
 
@@ -694,6 +660,4 @@ if __name__ == "__main__":
     except Exception as e:
         raise e
     finally:
-        print(test.update_counts)
-        print(test.white)
         test.write_csv()
